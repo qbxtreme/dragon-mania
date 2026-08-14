@@ -385,26 +385,43 @@ function renderShop() {
     list.appendChild(h);
   };
 
-  section("Habitats");
-  for (const t of HABITAT_TYPES) {
-    const el = ELEMENTS[t.element];
-    const row = document.createElement("div");
-    row.className = "card-row shop-item";
-    row.innerHTML = `
-      <div class="d-sprite med" style="--c:${el.color}"><div class="body" style="border-radius:16px;left:10%;width:80%;height:70%"></div></div>
-      <div class="info"><h3>${t.name}</h3><p class="meta">${el.name} · holds ${t.capacity}</p><p class="price">${t.cost} gold</p></div>
-      <div class="card-actions"><button type="button" class="btn btn-primary">Build</button></div>
-    `;
-    $("button", row).addEventListener("click", () => {
-      const res = buyHabitat(state, t.id);
-      toast(res.msg);
-      if (res.ok) {
-        persist();
-        renderShop();
-      }
-    });
-    list.appendChild(row);
-  }
+  const habitatSection = (title, types) => {
+    section(title);
+    for (const t of types) {
+      const el = ELEMENTS[t.element];
+      const row = document.createElement("div");
+      row.className = "card-row shop-item";
+      row.innerHTML = `
+        <div class="d-sprite med" style="--c:${el.color}"><div class="body" style="border-radius:16px;left:10%;width:80%;height:70%"></div></div>
+        <div class="info"><h3>${t.name}</h3><p class="meta">${el.name} · holds ${t.capacity}</p><p class="price">${t.cost} gold</p></div>
+        <div class="card-actions"><button type="button" class="btn btn-primary">Build</button></div>
+      `;
+      $("button", row).addEventListener("click", () => {
+        const res = buyHabitat(state, t.id);
+        toast(res.msg);
+        if (res.ok) {
+          persist();
+          renderShop();
+        }
+      });
+      list.appendChild(row);
+    }
+  };
+
+  const ancientEls = new Set(["magic", "chaos", "happy", "dream", "beauty", "soul"]);
+  const advancedEls = new Set(["ice", "metal", "dark", "light", "war", "pure", "legend", "primal", "wind", "time"]);
+  habitatSection(
+    "Habitats — Starter",
+    HABITAT_TYPES.filter((t) => !ancientEls.has(t.element) && !advancedEls.has(t.element))
+  );
+  habitatSection(
+    "Habitats — Advanced",
+    HABITAT_TYPES.filter((t) => advancedEls.has(t.element))
+  );
+  habitatSection(
+    "Habitats — Ancient",
+    HABITAT_TYPES.filter((t) => ancientEls.has(t.element))
+  );
 
   section("Food");
   for (const p of FOOD_PACKS) {
@@ -428,13 +445,14 @@ function renderShop() {
 
   section("Eggs");
   for (const e of EGG_OFFERS) {
-    const color = e.element ? ELEMENTS[e.element].color : "#c9a0ff";
+    const color = e.element ? ELEMENTS[e.element].color : e.ancient ? "#b06bd4" : "#c9a0ff";
     const price = e.gems ? `${e.gems} gems` : `${e.cost} gold`;
+    const meta = e.ancient ? "Random Ancient element" : e.element ? "Hatch a new dragon" : "Any non-ancient element";
     const row = document.createElement("div");
     row.className = "card-row shop-item";
     row.innerHTML = `
       <div style="width:44px;height:56px;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;background:radial-gradient(circle at 35% 30%,#fff8,#0000),${color};box-shadow:inset 0 -8px 12px rgba(0,0,0,.2)"></div>
-      <div class="info"><h3>${e.name}</h3><p class="meta">Hatch a new dragon</p><p class="price">${price}</p></div>
+      <div class="info"><h3>${e.name}</h3><p class="meta">${meta}</p><p class="price">${price}</p></div>
       <div class="card-actions"><button type="button" class="btn btn-primary">Hatch</button></div>
     `;
     $("button", row).addEventListener("click", () => {

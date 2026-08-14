@@ -24,9 +24,10 @@ Or edit the code on github.com in Safari / Working Copy, then refresh the Pages 
 
 - **Isle** — elemental habitats that generate gold over time
 - **Dragons** — feed dragons to level them for battle
-- **Breed** — combine two level-4+ dragons (500 gold)
+- **Breed** — combine two level-4+ dragons (500 gold); hybrids can unlock rare & Ancient elements
 - **Arena** — elemental matchups against escalating foes
-- **Shop** — habitats, food, and eggs
+- **Shop** — habitats for all 21 elements, food, and eggs
+- **Elements** — full Dragon City set (Terra → Soul, including Ancient World)
 - **Save** — progress in `localStorage`
 
 ## Stack
