@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Dragon Mania</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Title -->
+    <section id="screen-title" class="screen screen-title is-active" aria-label="Title">
+      <div class="sky-layer" aria-hidden="true"></div>
+      <div class="cloud cloud-a" aria-hidden="true"></div>
+      <div class="cloud cloud-b" aria-hidden="true"></div>
+      <div class="title-hero">
+        <p class="title-tag">Raise. Breed. Conquer.</p>
+        <h1 class="brand">Dragon<br />Mania</h1>
+        <p class="title-lead">Build your island empire and hatch legendary dragons.</p>
+        <div class="title-actions">
+          <button type="button" class="btn btn-primary" id="btn-play">Play</button>
+          <button type="button" class="btn btn-ghost" id="btn-reset-save">New Game</button>
+        </div>
+      </div>
+      <div class="title-island" aria-hidden="true">
+        <div class="island-mass"></div>
+        <div class="dragon-silhouette ds-1"></div>
+        <div class="dragon-silhouette ds-2"></div>
+      </div>
+    </section>
+
+    <!-- Game shell -->
+    <section id="screen-game" class="screen screen-game" aria-label="Game" hidden>
+      <header class="hud">
+        <button type="button" class="hud-brand" id="btn-home" title="Title screen">DM</button>
+        <div class="resources" role="status">
+          <span class="res gold" title="Gold"><i></i><b id="res-gold">0</b></span>
+          <span class="res food" title="Food"><i></i><b id="res-food">0</b></span>
+          <span class="res gems" title="Gems"><i></i><b id="res-gems">0</b></span>
+        </div>
+        <div class="hud-meta">
+          <span id="player-level">Isle Lv 1</span>
+        </div>
+      </header>
+
+      <main class="stage">
+        <!-- Island -->
+        <div id="panel-island" class="panel panel-island is-active">
+          <div class="island-scene">
+            <div class="island-sky"></div>
+            <div class="island-water"></div>
+            <div class="island-land">
+              <div id="habitat-grid" class="habitat-grid"></div>
+            </div>
+          </div>
+          <p class="panel-hint" id="island-hint">Tap a habitat to collect gold or place a dragon.</p>
+        </div>
+
+        <!-- Dragons -->
+        <div id="panel-dragons" class="panel panel-dragons">
+          <div class="panel-head">
+            <h2>Your Dragons</h2>
+            <p>Feed them to grow stronger for battle.</p>
+          </div>
+          <div id="dragon-list" class="dragon-list"></div>
+        </div>
+
+        <!-- Breed -->
+        <div id="panel-breed" class="panel panel-breed">
+          <div class="panel-head">
+            <h2>Breeding Sanctuary</h2>
+            <p>Combine two dragons to hatch a new egg.</p>
+          </div>
+          <div class="breed-arena">
+            <button type="button" class="breed-slot" id="breed-slot-a" data-slot="a">
+              <span class="slot-label">Parent A</span>
+            </button>
+            <div class="breed-plus" aria-hidden="true">+</div>
+            <button type="button" class="breed-slot" id="breed-slot-b" data-slot="b">
+              <span class="slot-label">Parent B</span>
+            </button>
+          </div>
+          <div class="breed-result" id="breed-result" hidden></div>
+          <button type="button" class="btn btn-primary" id="btn-breed" disabled>Breed (500 gold)</button>
+          <div id="breed-picker" class="breed-picker" hidden></div>
+        </div>
+
+        <!-- Battle -->
+        <div id="panel-battle" class="panel panel-battle">
+          <div class="panel-head">
+            <h2>Arena</h2>
+            <p>Pick a champion and challenge elemental foes.</p>
+          </div>
+          <div class="battle-setup" id="battle-setup">
+            <label class="field">
+              <span>Your dragon</span>
+              <select id="battle-dragon"></select>
+            </label>
+            <div class="foe-row" id="foe-row"></div>
+            <button type="button" class="btn btn-primary" id="btn-battle">Fight</button>
+          </div>
+          <div class="battle-arena" id="battle-arena" hidden>
+            <div class="fighters">
+              <div class="fighter you" id="fighter-you"></div>
+              <div class="vs">VS</div>
+              <div class="fighter foe" id="fighter-foe"></div>
+            </div>
+            <div class="hp-bars">
+              <div class="hp"><span id="hp-you"></span></div>
+              <div class="hp foe"><span id="hp-foe"></span></div>
+            </div>
+            <p class="battle-log" id="battle-log"></p>
+            <button type="button" class="btn btn-ghost" id="btn-battle-done" hidden>Back to Arena</button>
+          </div>
+        </div>
+
+        <!-- Shop -->
+        <div id="panel-shop" class="panel panel-shop">
+          <div class="panel-head">
+            <h2>Market</h2>
+            <p>Habitats, food, and starter eggs for your isle.</p>
+          </div>
+          <div id="shop-list" class="shop-list"></div>
+        </div>
+      </main>
+
+      <nav class="dock" aria-label="Main">
+        <button type="button" class="dock-btn is-active" data-panel="island">Isle</button>
+        <button type="button" class="dock-btn" data-panel="dragons">Dragons</button>
+        <button type="button" class="dock-btn" data-panel="breed">Breed</button>
+        <button type="button" class="dock-btn" data-panel="battle">Arena</button>
+        <button type="button" class="dock-btn" data-panel="shop">Shop</button>
+      </nav>
+    </section>
+
+    <!-- Modal -->
+    <div id="modal" class="modal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <h3 id="modal-title"></h3>
+        <div id="modal-body"></div>
+        <div class="modal-actions" id="modal-actions"></div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+  </div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
