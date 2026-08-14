@@ -11,6 +11,11 @@ import {
   FOOD_PACKS,
   EGG_OFFERS,
   FOES,
+  HYBRID_ELEMENTS,
+  RARE_HYBRID_ELEMENTS,
+  ANCIENT_ELEMENTS,
+  normalizeElement,
+  normalizeHabitatType,
 } from "./data.js";
 
 const SAVE_KEY = "dragon-mania-save-v1";
@@ -39,7 +44,15 @@ export function hatchFromElement(element) {
 }
 
 export function hatchMystery() {
-  const pool = SPECIES.filter((s) => s.rarity !== "legendary" || Math.random() < 0.08);
+  const pool = SPECIES.filter(
+    (s) => !ANCIENT_ELEMENTS.includes(s.element) && (s.rarity !== "legendary" || Math.random() < 0.08)
+  );
+  return createDragon(pickWeightedSpecies(pool).id);
+}
+
+export function hatchAncient() {
+  const el = ANCIENT_ELEMENTS[Math.floor(Math.random() * ANCIENT_ELEMENTS.length)];
+  const pool = speciesForElement(el);
   return createDragon(pickWeightedSpecies(pool).id);
 }
 
@@ -50,10 +63,16 @@ export function breedSpecies(parentA, parentB) {
   const sameEl = sa.element === sb.element;
   let element = sameEl ? sa.element : Math.random() < 0.5 ? sa.element : sb.element;
 
-  // Hybrid chance toward rarer elements when parents differ
-  if (!sameEl && Math.random() < 0.18) {
-    const hybrids = ["dark", "light", "metal"];
-    element = hybrids[Math.floor(Math.random() * hybrids.length)];
+  // Hybrid chance toward rarer / ancient elements when parents differ
+  if (!sameEl) {
+    const roll = Math.random();
+    if (roll < 0.06) {
+      element = ANCIENT_ELEMENTS[Math.floor(Math.random() * ANCIENT_ELEMENTS.length)];
+    } else if (roll < 0.14) {
+      element = RARE_HYBRID_ELEMENTS[Math.floor(Math.random() * RARE_HYBRID_ELEMENTS.length)];
+    } else if (roll < 0.28) {
+      element = HYBRID_ELEMENTS[Math.floor(Math.random() * HYBRID_ELEMENTS.length)];
+    }
   }
 
   let pool = speciesForElement(element);
@@ -76,15 +95,15 @@ export function defaultState() {
   const d2 = createDragon("ripple");
   const h1 = {
     id: nextId("h"),
-    typeId: "fire_den",
-    element: "fire",
+    typeId: "flame_den",
+    element: "flame",
     dragonIds: [d1.id],
     lastCollectAt: Date.now(),
   };
   const h2 = {
     id: nextId("h"),
-    typeId: "tide_pool",
-    element: "water",
+    typeId: "sea_pool",
+    element: "sea",
     dragonIds: [d2.id],
     lastCollectAt: Date.now(),
   };
@@ -104,13 +123,25 @@ export function defaultState() {
   };
 }
 
+/** Migrate legacy fire/water/earth ids and old habitat type ids. */
+export function migrateState(data) {
+  for (const d of data.dragons || []) {
+    d.element = normalizeElement(d.element);
+  }
+  for (const h of data.habitats || []) {
+    h.element = normalizeElement(h.element);
+    h.typeId = normalizeHabitatType(h.typeId);
+  }
+  return data;
+}
+
 export function loadState() {
   try {
     const raw = localStorage.getItem(SAVE_KEY);
     if (!raw) return defaultState();
     const data = JSON.parse(raw);
     if (!data?.dragons || !data?.habitats) return defaultState();
-    return data;
+    return migrateState(data);
   } catch {
     return defaultState();
   }
@@ -215,7 +246,10 @@ export function buyEgg(state, offerId) {
   if (offer.cost && state.gold < offer.cost) return { ok: false, msg: "Not enough gold." };
   state.gems -= offer.gems || 0;
   state.gold -= offer.cost || 0;
-  const dragon = offer.element ? hatchFromElement(offer.element) : hatchMystery();
+  let dragon;
+  if (offer.element) dragon = hatchFromElement(offer.element);
+  else if (offer.ancient) dragon = hatchAncient();
+  else dragon = hatchMystery();
   state.dragons.push(dragon);
   return { ok: true, msg: `Hatched ${dragon.name}!`, dragon };
 }
@@ -296,4 +330,15 @@ export function runBattle(state, dragonId, foeId) {
   };
 }
 
-export { ELEMENTS, HABITAT_TYPES, SPECIES, FOOD_PACKS, EGG_OFFERS, FOES, statsForDragon, speciesById, xpToLevel };
+export {
+  ELEMENTS,
+  HABITAT_TYPES,
+  SPECIES,
+  FOOD_PACKS,
+  EGG_OFFERS,
+  FOES,
+  ANCIENT_ELEMENTS,
+  statsForDragon,
+  speciesById,
+  xpToLevel,
+};
