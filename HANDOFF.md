@@ -11,7 +11,8 @@ Open http://localhost:4173
 
 ## Layout
 - `index.html` — title screen + game shell (Isle / Dragons / Breed / Arena / Shop)
-- `css/styles.css` — teal/ember island look, Lilita One + Nunito
+- `css/styles.css` — teal/ember island look, Lilita One + Nunito, floating-isle map
+- `js/art.js` — original SVG dragons, habitats, eggs, food (Dragon City–inspired, not copied)
 - `js/data.js` — elements, species, habitats, foes, shop offers
 - `js/game.js` — state, economy, breed, battle, save/load
 - `js/main.js` — UI wiring

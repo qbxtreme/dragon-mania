@@ -22,8 +22,8 @@ Or edit the code on github.com in Safari / Working Copy, then refresh the Pages 
 
 ## Features
 
-- **Isle** — elemental habitats that generate gold over time
-- **Dragons** — feed dragons to level them for battle
+- **Isle** — floating island with isometric habitats that generate gold
+- **Dragons** — original cartoon dragons (element crests, idle flap) you feed to level up
 - **Breed** — combine two level-4+ dragons (500 gold)
 - **Arena** — elemental matchups against escalating foes
 - **Shop** — habitats, food, and eggs
@@ -31,4 +31,5 @@ Or edit the code on github.com in Safari / Working Copy, then refresh the Pages 
 
 ## Stack
 
-Vanilla HTML, CSS, and ES modules. No build step.
+Vanilla HTML, CSS, ES modules, and original inline SVG art. No build step.
+Graphics are **inspired by** the cartoon island look of games like Dragon City — not copied from that game.
