@@ -393,26 +393,43 @@ function renderShop() {
     list.appendChild(h);
   };
 
-  section("Habitats");
-  for (const t of HABITAT_TYPES) {
-    const el = ELEMENTS[t.element];
-    const row = document.createElement("div");
-    row.className = "card-row shop-item";
-    row.innerHTML = `
-      <div class="shop-thumb habitat-thumb">${habitatSvg(t.element)}</div>
-      <div class="info"><h3>${t.name}</h3><p class="meta">${el.name} · holds ${t.capacity}</p><p class="price">${coinSvg(14)} ${t.cost}</p></div>
-      <div class="card-actions"><button type="button" class="btn btn-primary">Build</button></div>
-    `;
-    $("button", row).addEventListener("click", () => {
-      const res = buyHabitat(state, t.id);
-      toast(res.msg);
-      if (res.ok) {
-        persist();
-        renderShop();
-      }
-    });
-    list.appendChild(row);
-  }
+  const habitatSection = (title, types) => {
+    section(title);
+    for (const t of types) {
+      const el = ELEMENTS[t.element];
+      const row = document.createElement("div");
+      row.className = "card-row shop-item";
+      row.innerHTML = `
+        <div class="shop-thumb habitat-thumb">${habitatSvg(t.element)}</div>
+        <div class="info"><h3>${t.name}</h3><p class="meta">${el.name} · holds ${t.capacity}</p><p class="price">${coinSvg(14)} ${t.cost}</p></div>
+        <div class="card-actions"><button type="button" class="btn btn-primary">Build</button></div>
+      `;
+      $("button", row).addEventListener("click", () => {
+        const res = buyHabitat(state, t.id);
+        toast(res.msg);
+        if (res.ok) {
+          persist();
+          renderShop();
+        }
+      });
+      list.appendChild(row);
+    }
+  };
+
+  const ancientEls = new Set(["magic", "chaos", "happy", "dream", "beauty", "soul"]);
+  const advancedEls = new Set(["ice", "metal", "dark", "light", "war", "pure", "legend", "primal", "wind", "time"]);
+  habitatSection(
+    "Habitats — Starter",
+    HABITAT_TYPES.filter((t) => !ancientEls.has(t.element) && !advancedEls.has(t.element))
+  );
+  habitatSection(
+    "Habitats — Advanced",
+    HABITAT_TYPES.filter((t) => advancedEls.has(t.element))
+  );
+  habitatSection(
+    "Habitats — Ancient",
+    HABITAT_TYPES.filter((t) => ancientEls.has(t.element))
+  );
 
   section("Food");
   for (const p of FOOD_PACKS) {
@@ -437,11 +454,12 @@ function renderShop() {
   section("Eggs");
   for (const e of EGG_OFFERS) {
     const price = e.gems ? `${e.gems} gems` : `${e.cost} gold`;
+    const meta = e.ancient ? "Random Ancient element" : e.element ? "Hatch a new dragon" : "Any non-ancient element";
     const row = document.createElement("div");
     row.className = "card-row shop-item";
     row.innerHTML = `
       <div class="shop-thumb">${eggSvg(e.element, 44)}</div>
-      <div class="info"><h3>${e.name}</h3><p class="meta">Hatch a new dragon</p><p class="price">${price}</p></div>
+      <div class="info"><h3>${e.name}</h3><p class="meta">${meta}</p><p class="price">${price}</p></div>
       <div class="card-actions"><button type="button" class="btn btn-primary">Hatch</button></div>
     `;
     $("button", row).addEventListener("click", () => {
@@ -464,17 +482,58 @@ function renderShop() {
   }
 }
 
-function startGame(fresh = false) {
-  if (fresh) {
-    clearSave();
-    state = defaultState();
-    saveState(state);
-  } else {
-    state = loadState();
+const LOAD_DURATION_MS = 5000;
+let loading = false;
+
+function setLoadingProgress(pct) {
+  const clamped = Math.max(1, Math.min(100, Math.round(pct)));
+  const fill = $("#loading-fill");
+  const label = $("#loading-pct");
+  const track = $(".loading-track");
+  if (fill) fill.style.width = `${clamped}%`;
+  if (label) label.textContent = `${clamped}%`;
+  if (track) track.setAttribute("aria-valuenow", String(clamped));
+}
+
+function runLoadingScreen() {
+  return new Promise((resolve) => {
+    showScreen("screen-loading");
+    setLoadingProgress(1);
+    const start = performance.now();
+
+    function frame(now) {
+      const t = Math.min(1, (now - start) / LOAD_DURATION_MS);
+      // 1% → 100% over 5 seconds
+      setLoadingProgress(1 + t * 99);
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        setLoadingProgress(100);
+        resolve();
+      }
+    }
+    requestAnimationFrame(frame);
+  });
+}
+
+async function startGame(fresh = false) {
+  if (loading) return;
+  loading = true;
+  try {
+    await runLoadingScreen();
+    if (fresh) {
+      clearSave();
+      state = defaultState();
+      saveState(state);
+    } else {
+      state = loadState();
+    }
+    showScreen("screen-game");
+    renderHud();
+    showPanel("island");
+  } finally {
+    loading = false;
   }
-  showScreen("screen-game");
-  renderHud();
-  showPanel("island");
 }
 
 function bind() {
@@ -494,6 +553,7 @@ function bind() {
     });
   });
   $("#btn-home").addEventListener("click", () => {
+    if (loading) return;
     persist();
     showScreen("screen-title");
   });

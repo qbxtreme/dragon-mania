@@ -24,9 +24,10 @@ Or edit the code on github.com in Safari / Working Copy, then refresh the Pages 
 
 - **Isle** — floating island with isometric habitats that generate gold
 - **Dragons** — original cartoon dragons (element crests, idle flap) you feed to level up
-- **Breed** — combine two level-4+ dragons (500 gold)
+- **Breed** — combine two level-4+ dragons (500 gold); hybrids can unlock rare & Ancient elements
 - **Arena** — elemental matchups against escalating foes
-- **Shop** — habitats, food, and eggs
+- **Shop** — habitats for all 21 elements, food, and eggs
+- **Elements** — full Dragon City set (Terra → Soul, including Ancient World)
 - **Save** — progress in `localStorage`
 
 ## Stack

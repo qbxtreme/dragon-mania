@@ -12,6 +12,19 @@
 </head>
 <body>
   <div id="app">
+    <!-- Loading -->
+    <section id="screen-loading" class="screen screen-loading" aria-label="Loading" hidden>
+      <div class="loading-sky" aria-hidden="true"></div>
+      <div class="loading-panel">
+        <p class="loading-brand">Dragon Mania</p>
+        <p class="loading-label" id="loading-label">Loading</p>
+        <div class="loading-track" role="progressbar" aria-valuemin="1" aria-valuemax="100" aria-valuenow="1" aria-labelledby="loading-label">
+          <div class="loading-fill" id="loading-fill"></div>
+        </div>
+        <p class="loading-pct" id="loading-pct">1%</p>
+      </div>
+    </section>
+
     <!-- Title -->
     <section id="screen-title" class="screen screen-title is-active" aria-label="Title">
       <div class="sky-layer" aria-hidden="true"></div>
