@@ -61,8 +61,9 @@ select {
 .screen-title {
   position: relative;
   display: grid;
-  place-items: center;
-  padding: 2rem 1.25rem 8rem;
+  place-items: end center;
+  align-content: end;
+  padding: 2rem 1.25rem 7.5rem;
   overflow: hidden;
 }
 
@@ -73,42 +74,12 @@ select {
   background:
     radial-gradient(ellipse 80% 50% at 70% 15%, rgba(255, 180, 90, 0.55), transparent 55%),
     linear-gradient(165deg, #2a6f8f 0%, #1a4d62 38%, #0f3544 72%, #0a2833 100%);
-  animation: sky-shift 14s ease-in-out infinite alternate;
 }
 
-@keyframes sky-shift {
-  from { filter: hue-rotate(0deg) brightness(1); }
-  to { filter: hue-rotate(8deg) brightness(1.05); }
-}
-
-.cloud {
-  position: absolute;
-  pointer-events: none;
-  background: rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  filter: blur(1px);
-  animation: drift 28s linear infinite;
-}
-
-.cloud-a {
-  width: 180px;
-  height: 42px;
-  top: 18%;
-  left: -20%;
-}
-
-.cloud-b {
-  width: 120px;
-  height: 30px;
-  top: 28%;
-  left: -10%;
-  animation-duration: 36s;
-  animation-delay: -8s;
-}
-
-@keyframes drift {
-  from { transform: translateX(0); }
-  to { transform: translateX(140vw); }
+.sky-layer.title-bg {
+  background:
+    linear-gradient(180deg, rgba(8, 28, 40, 0.28) 0%, rgba(8, 28, 40, 0.42) 45%, rgba(6, 20, 28, 0.72) 100%),
+    url("../assets/island-bg.jpg") center 32% / cover no-repeat;
 }
 
 .title-hero {
@@ -116,7 +87,46 @@ select {
   z-index: 2;
   text-align: center;
   max-width: 28rem;
+  margin-bottom: 0.5rem;
   animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.title-island {
+  position: absolute;
+  bottom: 3%;
+  left: 0;
+  right: 0;
+  height: 190px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.title-dragon {
+  position: absolute;
+  z-index: 3;
+  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.35));
+}
+
+.title-dragon .dragon-art.is-animated {
+  animation: none;
+}
+
+.td-1 {
+  bottom: 8px;
+  left: 4%;
+  animation: flap 3s ease-in-out infinite;
+}
+
+.td-2 {
+  bottom: 22px;
+  right: 5%;
+  animation: flap 3.4s ease-in-out infinite;
+  animation-delay: -1.4s;
+}
+
+@keyframes flap {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
 }
 
 .title-actions {
@@ -144,7 +154,8 @@ select {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: 0.75rem;
-  color: rgba(255, 236, 200, 0.85);
+  color: rgba(255, 236, 200, 0.9);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
 .brand {
@@ -156,7 +167,7 @@ select {
   color: #fff6e8;
   text-shadow:
     0 4px 0 #c45a1a,
-    0 10px 28px rgba(0, 0, 0, 0.35);
+    0 10px 28px rgba(0, 0, 0, 0.45);
   animation: brand-pop 1.2s cubic-bezier(0.34, 1.4, 0.64, 1) 0.15s both;
 }
 
@@ -168,104 +179,11 @@ select {
 .title-lead {
   margin: 1rem auto 1.5rem;
   max-width: 22rem;
-  color: rgba(243, 239, 230, 0.88);
+  color: rgba(243, 239, 230, 0.92);
   font-size: 1.05rem;
   font-weight: 700;
   line-height: 1.4;
-}
-
-.title-island {
-  position: absolute;
-  bottom: -2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(100%, 520px);
-  height: 220px;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.island-mass {
-  position: absolute;
-  bottom: 40px;
-  left: 10%;
-  right: 10%;
-  height: 110px;
-  background:
-    radial-gradient(ellipse at 50% 0%, #5cb86e 0%, transparent 60%),
-    linear-gradient(180deg, #4aa35c 0%, #2f6b3d 55%, #254f30 100%);
-  border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
-  box-shadow: 0 30px 0 #0d4a56;
-  animation: bob 4.5s ease-in-out infinite;
-}
-
-@keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-.dragon-silhouette {
-  display: none;
-}
-
-.title-dragon {
-  position: absolute;
-  z-index: 3;
-  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.28));
-  animation: flap 2.8s ease-in-out infinite;
-}
-
-.td-1 {
-  bottom: 118px;
-  left: 14%;
-}
-
-.td-2 {
-  bottom: 138px;
-  right: 16%;
-  animation-delay: -1.2s;
-}
-
-.title-habitat {
-  position: absolute;
-  left: 50%;
-  bottom: 92px;
-  width: 72px;
-  height: 54px;
-  transform: translateX(-50%);
-  background:
-    linear-gradient(135deg, transparent 42%, #c4891a 42% 58%, transparent 58%),
-    linear-gradient(180deg, #ffb347, #e85d2c);
-  clip-path: polygon(50% 0, 100% 28%, 100% 100%, 0 100%, 0 28%);
-  opacity: 0.9;
-  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.15);
-}
-
-.island-cliff {
-  position: absolute;
-  left: 12%;
-  right: 12%;
-  bottom: 28px;
-  height: 56px;
-  background: linear-gradient(180deg, #8b6a45, #5a3f28);
-  border-radius: 0 0 40% 40%;
-  z-index: 0;
-}
-
-.island-grass {
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  bottom: 70px;
-  height: 36px;
-  background: radial-gradient(ellipse at 50% 100%, #5ec86e, #2f8a42);
-  border-radius: 50% 50% 40% 40%;
-  z-index: 1;
-}
-
-@keyframes flap {
-  0%, 100% { transform: translateY(0) rotate(-4deg); }
-  50% { transform: translateY(-12px) rotate(4deg); }
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 /* —— Buttons —— */
@@ -424,10 +342,13 @@ select {
 
 .panel-hint {
   text-align: center;
-  color: rgba(243, 239, 230, 0.8);
+  color: rgba(243, 239, 230, 0.95);
   font-weight: 700;
   font-size: 0.88rem;
-  margin: 0.5rem 0 0;
+  margin: 0.35rem 0.75rem 0.5rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+  position: relative;
+  z-index: 3;
 }
 
 /* —— Island —— */
@@ -441,154 +362,53 @@ select {
 .island-scene {
   position: relative;
   flex: 1;
-  min-height: 400px;
+  min-height: 420px;
   overflow: hidden;
 }
 
-.island-sky {
+.island-scene.painted-isle {
+  background: #0d4a56;
+}
+
+.isle-backdrop {
   position: absolute;
-  inset: 0 0 30% 0;
-  pointer-events: none;
+  inset: 0;
   background:
-    radial-gradient(ellipse 55% 45% at 78% 18%, rgba(255, 190, 100, 0.55), transparent 60%),
-    radial-gradient(ellipse 40% 30% at 20% 40%, rgba(120, 210, 255, 0.25), transparent),
-    linear-gradient(180deg, #5eb3d4 0%, #3a8fb0 45%, #2a7590 100%);
+    linear-gradient(180deg, rgba(8, 40, 48, 0.15) 0%, rgba(8, 40, 48, 0.05) 40%, rgba(8, 40, 48, 0.35) 100%),
+    url("../assets/island-bg.jpg") center 40% / cover no-repeat;
+  transform: scale(1.02);
+  animation: isle-drift 12s ease-in-out infinite alternate;
 }
 
-.sky-cloud {
-  position: absolute;
-  height: 28px;
-  border-radius: 40px;
-  background: rgba(255, 255, 255, 0.55);
-  filter: blur(0.5px);
-  animation: drift 28s linear infinite;
+@keyframes isle-drift {
+  from { transform: scale(1.02) translateY(0); }
+  to { transform: scale(1.05) translateY(-1.5%); }
 }
 
-.sky-cloud::before,
-.sky-cloud::after {
-  content: "";
-  position: absolute;
-  background: inherit;
-  border-radius: 50%;
-}
-
-.sky-cloud::before {
-  width: 36px;
-  height: 36px;
-  top: -16px;
-  left: 16px;
-}
-
-.sky-cloud::after {
-  width: 28px;
-  height: 28px;
-  top: -10px;
-  right: 12px;
-}
-
-.sc-1 { width: 90px; top: 12%; left: -20%; animation-duration: 32s; }
-.sc-2 { width: 70px; top: 28%; left: -30%; animation-duration: 40s; animation-delay: -12s; opacity: 0.7; }
-.sc-3 { width: 110px; top: 8%; left: -40%; animation-duration: 48s; animation-delay: -20s; opacity: 0.5; }
-
-@keyframes drift {
-  from { transform: translateX(0); }
-  to { transform: translateX(140vw); }
-}
-
-.island-water {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 38%;
-  pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(80, 200, 220, 0.35) 0%, transparent 18%),
-    linear-gradient(180deg, #2aa0b4 0%, #147a8c 40%, #0d4a56 100%);
-  overflow: hidden;
-}
-
-.wave {
-  position: absolute;
-  left: -10%;
-  width: 120%;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  animation: wave-move 5s ease-in-out infinite;
-}
-
-.w1 { top: 8%; animation-duration: 4.5s; }
-.w2 { top: 28%; opacity: 0.6; animation-duration: 6s; animation-delay: -2s; }
-
-@keyframes wave-move {
-  0%, 100% { transform: translateX(-2%) scaleY(1); }
-  50% { transform: translateX(2%) scaleY(1.15); }
-}
-
-.floating-isle {
+.habitat-stage {
   position: absolute;
   left: 50%;
-  top: 10%;
-  bottom: 10%;
-  width: min(560px, 94%);
+  top: 12%;
+  bottom: 8%;
+  width: min(620px, 96%);
   transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
   z-index: 2;
-}
-
-.isle-top {
-  flex: 1;
-  min-height: 0;
-  background:
-    radial-gradient(ellipse at 50% 20%, #7ed98a 0%, transparent 50%),
-    radial-gradient(ellipse at 30% 70%, #4caf60 0%, transparent 45%),
-    linear-gradient(165deg, #5ec86e 0%, #3d9b4f 55%, #2f7a3d 100%);
-  border-radius: 48% 52% 42% 46% / 38% 40% 52% 48%;
-  box-shadow:
-    inset 0 10px 28px rgba(255, 255, 255, 0.18),
-    inset 0 -16px 24px rgba(20, 60, 30, 0.25);
-  padding: 1.5rem 1.1rem 1.75rem;
   overflow: auto;
-  position: relative;
-  z-index: 2;
-}
-
-.isle-cliff {
-  height: 36px;
-  margin: -6px 8% 0;
-  background: linear-gradient(180deg, #a88458 0%, #7a5535 55%, #5a3c24 100%);
-  border-radius: 0 0 40% 40%;
-  box-shadow: inset 0 4px 0 rgba(255, 220, 160, 0.15);
-  z-index: 1;
-}
-
-.isle-shadow {
-  height: 18px;
-  margin: 6px 12% 0;
-  background: radial-gradient(ellipse at center, rgba(8, 40, 48, 0.45), transparent 70%);
-  border-radius: 50%;
-  animation: bob-shadow 3.5s ease-in-out infinite;
-}
-
-@keyframes bob-shadow {
-  0%, 100% { transform: scaleX(1); opacity: 0.9; }
-  50% { transform: scaleX(0.92); opacity: 0.65; }
+  padding: 0.5rem 0.4rem 1rem;
 }
 
 .habitat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
-  gap: 1rem 0.85rem;
-  max-width: 480px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.25rem 1rem;
+  max-width: 560px;
   margin: 0 auto;
   align-items: end;
 }
 
 .habitat {
   position: relative;
-  aspect-ratio: 1.05;
+  aspect-ratio: 1;
   border: none;
   border-radius: 0;
   padding: 0;
@@ -602,26 +422,35 @@ select {
 }
 
 .habitat:hover {
-  transform: translateY(-6px) scale(1.04);
+  transform: translateY(-8px) scale(1.05);
 }
 
 .habitat:active {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-3px) scale(1.02);
 }
 
 .hab-build {
   position: absolute;
-  inset: 0 4% 18% 4%;
+  inset: 0 0 16% 0;
   pointer-events: none;
-  filter: drop-shadow(0 6px 4px rgba(0, 0, 0, 0.22));
+  display: grid;
+  place-items: end center;
+  filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.35));
+}
+
+.hab-build .habitat-art {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
 }
 
 .hab-dragons {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 22%;
-  height: 42px;
+  bottom: 14%;
+  height: 58px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -631,8 +460,17 @@ select {
 }
 
 .hab-d {
-  margin: 0 -6px;
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+  margin: 0 -10px;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.28));
+}
+
+.hab-d .d-sprite.tiny {
+  width: 64px;
+  height: 64px;
+}
+
+.hab-d .dragon-art.is-animated {
+  animation: dragon-bob 2.2s ease-in-out infinite;
 }
 
 .hab-d.slot-1 {
@@ -640,16 +478,25 @@ select {
   z-index: 1;
 }
 
+.hab-d.slot-1 .dragon-art.is-animated {
+  animation-delay: -0.7s;
+}
+
+@keyframes dragon-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
 .hab-empty-label {
   position: absolute;
   left: 50%;
   bottom: 28%;
   transform: translateX(-50%);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  opacity: 0.85;
+  opacity: 0.9;
   white-space: nowrap;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
   z-index: 2;
 }
 
@@ -658,28 +505,28 @@ select {
   left: 4%;
   right: 4%;
   bottom: 0;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.65);
   line-height: 1.2;
 }
 
 .habitat .hab-gold {
   position: absolute;
-  top: -4px;
+  top: -2px;
   right: 0;
   display: inline-flex;
   align-items: center;
   gap: 0.2rem;
   background: linear-gradient(180deg, #fff6d0, #f0c84a);
   color: #7a4e08;
-  padding: 0.18rem 0.45rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 999px;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  box-shadow: 0 2px 0 #c4891a, 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 0 #c4891a, 0 4px 10px rgba(0, 0, 0, 0.25);
   z-index: 3;
   opacity: 0;
   transform: scale(0.8);
@@ -698,23 +545,24 @@ select {
 }
 
 .habitat.empty {
-  background: rgba(255, 255, 255, 0.14);
-  border: 2px dashed rgba(255, 255, 255, 0.45);
-  border-radius: 20px;
-  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.16);
+  border: 2px dashed rgba(255, 255, 255, 0.5);
+  border-radius: 22px;
+  color: rgba(255, 255, 255, 0.95);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.25rem;
   font-weight: 800;
-  font-size: 0.8rem;
-  min-height: 110px;
-  aspect-ratio: 1.05;
+  font-size: 0.85rem;
+  min-height: 130px;
+  aspect-ratio: 1;
+  backdrop-filter: blur(4px);
 }
 
 .habitat.empty .empty-plus {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   line-height: 1;
   opacity: 0.9;
 }
@@ -724,9 +572,9 @@ select {
 }
 
 @keyframes collect-pulse {
-  0% { filter: drop-shadow(0 6px 4px rgba(0, 0, 0, 0.22)) drop-shadow(0 0 0 rgba(232, 184, 74, 0.8)); }
-  50% { filter: drop-shadow(0 6px 4px rgba(0, 0, 0, 0.22)) drop-shadow(0 0 16px rgba(232, 184, 74, 0.9)); }
-  100% { filter: drop-shadow(0 6px 4px rgba(0, 0, 0, 0.22)); }
+  0% { filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 0 rgba(232, 184, 74, 0.8)); }
+  50% { filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 18px rgba(232, 184, 74, 0.95)); }
+  100% { filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.35)); }
 }
 
 /* —— Dragon sprite —— */
@@ -741,12 +589,20 @@ select {
 .d-sprite .dragon-art {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-.d-sprite.tiny { width: 48px; height: 38px; }
-.d-sprite.med { width: 72px; height: 58px; }
-.d-sprite.lg { width: 104px; height: 84px; }
+.dragon-art.is-animated {
+  animation: dragon-bob 2.4s ease-in-out infinite;
+}
+
+.d-sprite.tiny { width: 56px; height: 56px; }
+.d-sprite.med { width: 88px; height: 88px; }
+.d-sprite.lg { width: 140px; height: 140px; }
 
 .modal-hero {
   display: flex;
@@ -755,21 +611,23 @@ select {
 }
 
 .shop-thumb {
-  width: 56px;
-  height: 56px;
+  width: 72px;
+  height: 72px;
   flex-shrink: 0;
   display: grid;
   place-items: center;
 }
 
 .shop-thumb.habitat-thumb {
-  width: 64px;
-  height: 52px;
+  width: 84px;
+  height: 72px;
 }
 
+.shop-thumb img,
 .shop-thumb svg {
   max-width: 100%;
   max-height: 100%;
+  object-fit: contain;
 }
 
 .price {
