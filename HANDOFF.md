@@ -20,11 +20,12 @@ Open http://localhost:4173
 Terra, Flame, Sea, Nature, Electric, Ice, Metal, Dark, Light, War, Pure, Legend, Primal, Wind, Time + Ancient: Magic, Chaos, Happy, Dream, Beauty, Soul.
 
 ## Gameplay loop
-1. Habitats earn gold over time → tap to collect
-2. Shop: food, eggs, more habitats (starter / advanced / ancient)
-3. Feed dragons to level (breed needs both parents level 4+)
-4. Breed for 500 gold; hybrid chance can unlock ice/metal/dark/light/war/wind, rarer pure/primal/time/legend, or Ancient elements
-5. Arena: elemental advantage/resist; wins grant gold/food; every 3 wins raises isle level + gems
+1. Tap Play → 5s loading screen (1%→100%), then isle
+2. Habitats earn gold over time → tap to collect
+3. Shop: food, eggs, more habitats (starter / advanced / ancient)
+4. Feed dragons to level (breed needs both parents level 4+)
+5. Breed for 500 gold; hybrid chance can unlock ice/metal/dark/light/war/wind, rarer pure/primal/time/legend, or Ancient elements
+6. Arena: elemental advantage/resist; wins grant gold/food; every 3 wins raises isle level + gems
 
 ## Suggested next features (if asked)
 - More species / animations

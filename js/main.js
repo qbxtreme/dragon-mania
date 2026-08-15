@@ -475,17 +475,58 @@ function renderShop() {
   }
 }
 
-function startGame(fresh = false) {
-  if (fresh) {
-    clearSave();
-    state = defaultState();
-    saveState(state);
-  } else {
-    state = loadState();
+const LOAD_DURATION_MS = 5000;
+let loading = false;
+
+function setLoadingProgress(pct) {
+  const clamped = Math.max(1, Math.min(100, Math.round(pct)));
+  const fill = $("#loading-fill");
+  const label = $("#loading-pct");
+  const track = $(".loading-track");
+  if (fill) fill.style.width = `${clamped}%`;
+  if (label) label.textContent = `${clamped}%`;
+  if (track) track.setAttribute("aria-valuenow", String(clamped));
+}
+
+function runLoadingScreen() {
+  return new Promise((resolve) => {
+    showScreen("screen-loading");
+    setLoadingProgress(1);
+    const start = performance.now();
+
+    function frame(now) {
+      const t = Math.min(1, (now - start) / LOAD_DURATION_MS);
+      // 1% → 100% over 5 seconds
+      setLoadingProgress(1 + t * 99);
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        setLoadingProgress(100);
+        resolve();
+      }
+    }
+    requestAnimationFrame(frame);
+  });
+}
+
+async function startGame(fresh = false) {
+  if (loading) return;
+  loading = true;
+  try {
+    await runLoadingScreen();
+    if (fresh) {
+      clearSave();
+      state = defaultState();
+      saveState(state);
+    } else {
+      state = loadState();
+    }
+    showScreen("screen-game");
+    renderHud();
+    showPanel("island");
+  } finally {
+    loading = false;
   }
-  showScreen("screen-game");
-  renderHud();
-  showPanel("island");
 }
 
 function bind() {
@@ -505,6 +546,7 @@ function bind() {
     });
   });
   $("#btn-home").addEventListener("click", () => {
+    if (loading) return;
     persist();
     showScreen("screen-title");
   });
