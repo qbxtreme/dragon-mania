@@ -40,9 +40,12 @@
         </div>
       </div>
       <div class="title-island" aria-hidden="true">
+        <div class="island-cliff"></div>
         <div class="island-mass"></div>
-        <div class="dragon-silhouette ds-1"></div>
-        <div class="dragon-silhouette ds-2"></div>
+        <div class="island-grass"></div>
+        <div class="title-dragon td-1" id="title-dragon-a"></div>
+        <div class="title-dragon td-2" id="title-dragon-b"></div>
+        <div class="title-habitat"></div>
       </div>
     </section>
 
@@ -64,10 +67,21 @@
         <!-- Island -->
         <div id="panel-island" class="panel panel-island is-active">
           <div class="island-scene">
-            <div class="island-sky"></div>
-            <div class="island-water"></div>
-            <div class="island-land">
-              <div id="habitat-grid" class="habitat-grid"></div>
+            <div class="island-sky">
+              <div class="sky-cloud sc-1"></div>
+              <div class="sky-cloud sc-2"></div>
+              <div class="sky-cloud sc-3"></div>
+            </div>
+            <div class="island-water">
+              <div class="wave w1"></div>
+              <div class="wave w2"></div>
+            </div>
+            <div class="floating-isle">
+              <div class="isle-top">
+                <div id="habitat-grid" class="habitat-grid"></div>
+              </div>
+              <div class="isle-cliff"></div>
+              <div class="isle-shadow"></div>
             </div>
           </div>
           <p class="panel-hint" id="island-hint">Tap a habitat to collect gold or place a dragon.</p>
