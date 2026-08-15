@@ -31,5 +31,5 @@ Or edit the code on github.com in Safari / Working Copy, then refresh the Pages 
 
 ## Stack
 
-Vanilla HTML, CSS, ES modules, and original inline SVG art. No build step.
-Graphics are **inspired by** the cartoon island look of games like Dragon City — not copied from that game.
+Vanilla HTML, CSS, ES modules, and original painted PNG sprites. No build step.
+Graphics are **inspired by** the cartoon island look of games like Dragon City — original art, not copied from that game.

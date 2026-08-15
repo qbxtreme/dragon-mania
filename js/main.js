@@ -21,7 +21,7 @@ import {
   speciesById,
   xpToLevel,
 } from "./game.js";
-import { dragonSvg, habitatSvg, eggSvg, foodSvg, coinSvg } from "./art.js";
+import { dragonSvg, habitatSvg, eggSvg, foodSvg, coinSvg, preloadArt } from "./art.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -31,7 +31,7 @@ let breedPickSlot = null;
 let selectedFoe = FOES[0].id;
 let toastTimer;
 
-const SPRITE_PX = { tiny: 48, med: 72, lg: 104 };
+const SPRITE_PX = { tiny: 56, med: 88, lg: 140 };
 
 function spriteHtml(element, size = "med", { animate = true } = {}) {
   const px = SPRITE_PX[size] || SPRITE_PX.med;
@@ -543,9 +543,10 @@ function bind() {
 
 bind();
 renderHud();
+preloadArt();
 
-// Title-screen dragons (original SVG art)
+// Title-screen dragons (painted sprites)
 const ta = document.getElementById("title-dragon-a");
 const tb = document.getElementById("title-dragon-b");
-if (ta) ta.innerHTML = dragonSvg("fire", { size: 88, animate: true });
-if (tb) tb.innerHTML = dragonSvg("water", { size: 72, animate: true });
+if (ta) ta.innerHTML = dragonSvg("fire", { size: 120, animate: true });
+if (tb) tb.innerHTML = dragonSvg("water", { size: 100, animate: true });

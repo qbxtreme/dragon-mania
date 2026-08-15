@@ -14,9 +14,7 @@
   <div id="app">
     <!-- Title -->
     <section id="screen-title" class="screen screen-title is-active" aria-label="Title">
-      <div class="sky-layer" aria-hidden="true"></div>
-      <div class="cloud cloud-a" aria-hidden="true"></div>
-      <div class="cloud cloud-b" aria-hidden="true"></div>
+      <div class="sky-layer title-bg" aria-hidden="true"></div>
       <div class="title-hero">
         <p class="title-tag">Raise. Breed. Conquer.</p>
         <h1 class="brand">Dragon<br />Mania</h1>
@@ -27,12 +25,8 @@
         </div>
       </div>
       <div class="title-island" aria-hidden="true">
-        <div class="island-cliff"></div>
-        <div class="island-mass"></div>
-        <div class="island-grass"></div>
         <div class="title-dragon td-1" id="title-dragon-a"></div>
         <div class="title-dragon td-2" id="title-dragon-b"></div>
-        <div class="title-habitat"></div>
       </div>
     </section>
 
@@ -53,22 +47,10 @@
       <main class="stage">
         <!-- Island -->
         <div id="panel-island" class="panel panel-island is-active">
-          <div class="island-scene">
-            <div class="island-sky">
-              <div class="sky-cloud sc-1"></div>
-              <div class="sky-cloud sc-2"></div>
-              <div class="sky-cloud sc-3"></div>
-            </div>
-            <div class="island-water">
-              <div class="wave w1"></div>
-              <div class="wave w2"></div>
-            </div>
-            <div class="floating-isle">
-              <div class="isle-top">
-                <div id="habitat-grid" class="habitat-grid"></div>
-              </div>
-              <div class="isle-cliff"></div>
-              <div class="isle-shadow"></div>
+          <div class="island-scene painted-isle">
+            <div class="isle-backdrop" aria-hidden="true"></div>
+            <div class="habitat-stage">
+              <div id="habitat-grid" class="habitat-grid"></div>
             </div>
           </div>
           <p class="panel-hint" id="island-hint">Tap a habitat to collect gold or place a dragon.</p>
