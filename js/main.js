@@ -21,6 +21,7 @@ import {
   speciesById,
   xpToLevel,
 } from "./game.js";
+import { dragonSvg, habitatSvg, eggSvg, foodSvg, coinSvg } from "./art.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -30,11 +31,11 @@ let breedPickSlot = null;
 let selectedFoe = FOES[0].id;
 let toastTimer;
 
-function spriteHtml(element, size = "med") {
-  const color = ELEMENTS[element]?.color || "#888";
-  return `<div class="d-sprite ${size}" style="--c:${color}" aria-hidden="true">
-    <div class="wing"></div><div class="body"></div><div class="head"></div><div class="eye"></div>
-  </div>`;
+const SPRITE_PX = { tiny: 48, med: 72, lg: 104 };
+
+function spriteHtml(element, size = "med", { animate = true } = {}) {
+  const px = SPRITE_PX[size] || SPRITE_PX.med;
+  return `<div class="d-sprite ${size}" aria-hidden="true">${dragonSvg(element, { size: px, animate })}</div>`;
 }
 
 function toast(msg) {
@@ -118,15 +119,22 @@ function renderIsland() {
     const el = ELEMENTS[h.element];
     const gold = pendingGold(h, map);
     totalGold += gold;
-    const dragon = h.dragonIds[0] ? map[h.dragonIds[0]] : null;
+    const dragons = h.dragonIds.map((id) => map[id]).filter(Boolean);
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = "habitat";
-    btn.style.background = `linear-gradient(160deg, color-mix(in srgb, ${el.color} 55%, #1a4030), color-mix(in srgb, ${el.color} 25%, #0d2a20))`;
+    btn.className = `habitat el-${h.element}${gold > 0 ? " has-gold" : ""}`;
+    btn.style.setProperty("--el", el.color);
+    const dragonStack = dragons.length
+      ? `<div class="hab-dragons">${dragons
+          .slice(0, 2)
+          .map((d, i) => `<div class="hab-d slot-${i}">${spriteHtml(d.element, "tiny")}</div>`)
+          .join("")}</div>`
+      : `<div class="hab-empty-label">Empty · ${h.dragonIds.length}/${type?.capacity || 2}</div>`;
     btn.innerHTML = `
+      <div class="hab-build">${habitatSvg(h.element)}</div>
+      ${dragonStack}
       <div class="hab-name">${type?.name || h.element}</div>
-      <div class="hab-gold">+${gold}</div>
-      <div class="hab-dragon">${dragon ? spriteHtml(dragon.element) : `<span style="opacity:.7;font-size:.75rem;font-weight:800">Empty · ${h.dragonIds.length}/${type?.capacity || 2}</span>`}</div>
+      <div class="hab-gold">${coinSvg(14)} +${gold}</div>
     `;
     btn.addEventListener("click", () => onHabitatTap(h, btn));
     grid.appendChild(btn);
@@ -137,7 +145,7 @@ function renderIsland() {
     const empty = document.createElement("button");
     empty.type = "button";
     empty.className = "habitat empty";
-    empty.textContent = "Build habitat → Shop";
+    empty.innerHTML = `<span class="empty-plus">+</span><span>Build habitat</span>`;
     empty.addEventListener("click", () => showPanel("shop"));
     grid.appendChild(empty);
   }
@@ -391,8 +399,8 @@ function renderShop() {
     const row = document.createElement("div");
     row.className = "card-row shop-item";
     row.innerHTML = `
-      <div class="d-sprite med" style="--c:${el.color}"><div class="body" style="border-radius:16px;left:10%;width:80%;height:70%"></div></div>
-      <div class="info"><h3>${t.name}</h3><p class="meta">${el.name} · holds ${t.capacity}</p><p class="price">${t.cost} gold</p></div>
+      <div class="shop-thumb habitat-thumb">${habitatSvg(t.element)}</div>
+      <div class="info"><h3>${t.name}</h3><p class="meta">${el.name} · holds ${t.capacity}</p><p class="price">${coinSvg(14)} ${t.cost}</p></div>
       <div class="card-actions"><button type="button" class="btn btn-primary">Build</button></div>
     `;
     $("button", row).addEventListener("click", () => {
@@ -411,8 +419,8 @@ function renderShop() {
     const row = document.createElement("div");
     row.className = "card-row shop-item";
     row.innerHTML = `
-      <div style="width:48px;height:48px;border-radius:14px;background:radial-gradient(circle at 30% 30%,#b8f08a,#3d8b2a)"></div>
-      <div class="info"><h3>${p.name}</h3><p class="meta">+${p.food} food</p><p class="price">${p.cost} gold</p></div>
+      <div class="shop-thumb">${foodSvg(48)}</div>
+      <div class="info"><h3>${p.name}</h3><p class="meta">+${p.food} food</p><p class="price">${coinSvg(14)} ${p.cost}</p></div>
       <div class="card-actions"><button type="button" class="btn btn-primary">Buy</button></div>
     `;
     $("button", row).addEventListener("click", () => {
@@ -428,12 +436,11 @@ function renderShop() {
 
   section("Eggs");
   for (const e of EGG_OFFERS) {
-    const color = e.element ? ELEMENTS[e.element].color : "#c9a0ff";
     const price = e.gems ? `${e.gems} gems` : `${e.cost} gold`;
     const row = document.createElement("div");
     row.className = "card-row shop-item";
     row.innerHTML = `
-      <div style="width:44px;height:56px;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;background:radial-gradient(circle at 35% 30%,#fff8,#0000),${color};box-shadow:inset 0 -8px 12px rgba(0,0,0,.2)"></div>
+      <div class="shop-thumb">${eggSvg(e.element, 44)}</div>
       <div class="info"><h3>${e.name}</h3><p class="meta">Hatch a new dragon</p><p class="price">${price}</p></div>
       <div class="card-actions"><button type="button" class="btn btn-primary">Hatch</button></div>
     `;
@@ -445,7 +452,7 @@ function renderShop() {
         renderShop();
         openModal({
           title: "New dragon!",
-          body: `${spriteHtml(res.dragon.element, "lg")}<p style="text-align:center;font-weight:800;margin:.5rem 0 0">${res.dragon.name}</p><p style="text-align:center;color:var(--muted)">${ELEMENTS[res.dragon.element].name} · place them in a matching habitat</p>`,
+          body: `<div class="modal-hero">${spriteHtml(res.dragon.element, "lg")}</div><p style="text-align:center;font-weight:800;margin:.5rem 0 0">${res.dragon.name}</p><p style="text-align:center;color:var(--muted)">${ELEMENTS[res.dragon.element].name} · place them in a matching habitat</p>`,
           actions: [
             { label: "View dragons", primary: true, onClick: () => showPanel("dragons") },
             { label: "Nice", onClick: () => {} },
@@ -503,7 +510,7 @@ function bind() {
     renderBreed();
     const box = $("#breed-result");
     box.hidden = false;
-    box.innerHTML = `${spriteHtml(res.dragon.element, "lg")}<p style="font-weight:800;margin:.5rem 0 0">${res.msg}</p>`;
+    box.innerHTML = `<div class="modal-hero">${spriteHtml(res.dragon.element, "lg")}</div><p style="font-weight:800;margin:.5rem 0 0">${res.msg}</p>`;
     toast(res.msg);
   });
   $("#btn-battle").addEventListener("click", () => playBattle());
@@ -512,13 +519,33 @@ function bind() {
     if (e.target.id === "modal") closeModal();
   });
 
-  // Keep island gold badges in sync while viewing
+  // Refresh habitat gold badges without rebuilding SVG art
   setInterval(() => {
-    if ($("#panel-island")?.classList.contains("is-active") && !$("#screen-game").hidden) {
-      renderIsland();
-    }
+    if (!$("#panel-island")?.classList.contains("is-active") || $("#screen-game").hidden) return;
+    const map = dragonsById();
+    let totalGold = 0;
+    const buttons = $$("#habitat-grid .habitat:not(.empty)");
+    state.habitats.forEach((h, i) => {
+      const gold = pendingGold(h, map);
+      totalGold += gold;
+      const btn = buttons[i];
+      if (!btn) return;
+      btn.classList.toggle("has-gold", gold > 0);
+      const badge = $(".hab-gold", btn);
+      if (badge) badge.innerHTML = `${coinSvg(14)} +${gold}`;
+    });
+    $("#island-hint").textContent =
+      totalGold > 0
+        ? `${totalGold} gold ready — tap habitats to collect.`
+        : "Dragons earn gold over time. Tap habitats to collect.";
   }, 4000);
 }
 
 bind();
 renderHud();
+
+// Title-screen dragons (original SVG art)
+const ta = document.getElementById("title-dragon-a");
+const tb = document.getElementById("title-dragon-b");
+if (ta) ta.innerHTML = dragonSvg("fire", { size: 88, animate: true });
+if (tb) tb.innerHTML = dragonSvg("water", { size: 72, animate: true });

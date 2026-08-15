@@ -205,52 +205,62 @@ select {
 }
 
 .dragon-silhouette {
+  display: none;
+}
+
+.title-dragon {
   position: absolute;
-  width: 56px;
-  height: 40px;
-  background: var(--ember);
-  border-radius: 40% 60% 35% 50%;
-  opacity: 0.92;
-  animation: flap 2.4s ease-in-out infinite;
+  z-index: 3;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.28));
+  animation: flap 2.8s ease-in-out infinite;
 }
 
-.dragon-silhouette::before {
-  content: "";
+.td-1 {
+  bottom: 118px;
+  left: 14%;
+}
+
+.td-2 {
+  bottom: 138px;
+  right: 16%;
+  animation-delay: -1.2s;
+}
+
+.title-habitat {
   position: absolute;
-  left: -14px;
-  top: 8px;
-  width: 22px;
-  height: 16px;
-  background: inherit;
-  border-radius: 50% 10% 50% 40%;
-  transform: rotate(-20deg);
+  left: 50%;
+  bottom: 92px;
+  width: 72px;
+  height: 54px;
+  transform: translateX(-50%);
+  background:
+    linear-gradient(135deg, transparent 42%, #c4891a 42% 58%, transparent 58%),
+    linear-gradient(180deg, #ffb347, #e85d2c);
+  clip-path: polygon(50% 0, 100% 28%, 100% 100%, 0 100%, 0 28%);
+  opacity: 0.9;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.15);
 }
 
-.dragon-silhouette::after {
-  content: "";
+.island-cliff {
   position: absolute;
-  right: -8px;
-  top: 4px;
-  width: 28px;
-  height: 18px;
-  background: inherit;
-  clip-path: polygon(0 40%, 100% 0, 70% 100%);
-  opacity: 0.85;
+  left: 12%;
+  right: 12%;
+  bottom: 28px;
+  height: 56px;
+  background: linear-gradient(180deg, #8b6a45, #5a3f28);
+  border-radius: 0 0 40% 40%;
+  z-index: 0;
 }
 
-.ds-1 {
-  bottom: 130px;
-  left: 22%;
-  background: #e85d2c;
-}
-
-.ds-2 {
-  bottom: 150px;
-  right: 24%;
-  width: 44px;
-  height: 32px;
-  background: #3ec7c2;
-  animation-delay: -1.1s;
+.island-grass {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 70px;
+  height: 36px;
+  background: radial-gradient(ellipse at 50% 100%, #5ec86e, #2f8a42);
+  border-radius: 50% 50% 40% 40%;
+  z-index: 1;
 }
 
 @keyframes flap {
@@ -431,17 +441,58 @@ select {
 .island-scene {
   position: relative;
   flex: 1;
-  min-height: 360px;
+  min-height: 400px;
   overflow: hidden;
 }
 
 .island-sky {
   position: absolute;
-  inset: 0 0 35% 0;
+  inset: 0 0 30% 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(255, 170, 80, 0.4), transparent),
-    linear-gradient(180deg, #3a8aaa 0%, #2a6f82 100%);
+    radial-gradient(ellipse 55% 45% at 78% 18%, rgba(255, 190, 100, 0.55), transparent 60%),
+    radial-gradient(ellipse 40% 30% at 20% 40%, rgba(120, 210, 255, 0.25), transparent),
+    linear-gradient(180deg, #5eb3d4 0%, #3a8fb0 45%, #2a7590 100%);
+}
+
+.sky-cloud {
+  position: absolute;
+  height: 28px;
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.55);
+  filter: blur(0.5px);
+  animation: drift 28s linear infinite;
+}
+
+.sky-cloud::before,
+.sky-cloud::after {
+  content: "";
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.sky-cloud::before {
+  width: 36px;
+  height: 36px;
+  top: -16px;
+  left: 16px;
+}
+
+.sky-cloud::after {
+  width: 28px;
+  height: 28px;
+  top: -10px;
+  right: 12px;
+}
+
+.sc-1 { width: 90px; top: 12%; left: -20%; animation-duration: 32s; }
+.sc-2 { width: 70px; top: 28%; left: -30%; animation-duration: 40s; animation-delay: -12s; opacity: 0.7; }
+.sc-3 { width: 110px; top: 8%; left: -40%; animation-duration: 48s; animation-delay: -20s; opacity: 0.5; }
+
+@keyframes drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(140vw); }
 }
 
 .island-water {
@@ -449,175 +500,282 @@ select {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 42%;
+  height: 38%;
   pointer-events: none;
   background:
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 18px,
-      rgba(255, 255, 255, 0.04) 18px,
-      rgba(255, 255, 255, 0.04) 20px
-    ),
-    linear-gradient(180deg, #1f8a9c 0%, #0d4a56 100%);
-  animation: water-shimmer 6s linear infinite;
+    linear-gradient(180deg, rgba(80, 200, 220, 0.35) 0%, transparent 18%),
+    linear-gradient(180deg, #2aa0b4 0%, #147a8c 40%, #0d4a56 100%);
+  overflow: hidden;
 }
 
-@keyframes water-shimmer {
-  from { background-position: 0 0, 0 0; }
-  to { background-position: 40px 0, 0 0; }
-}
-
-.island-land {
+.wave {
   position: absolute;
-  left: 4%;
-  right: 4%;
-  bottom: 12%;
-  top: 18%;
+  left: -10%;
+  width: 120%;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  animation: wave-move 5s ease-in-out infinite;
+}
+
+.w1 { top: 8%; animation-duration: 4.5s; }
+.w2 { top: 28%; opacity: 0.6; animation-duration: 6s; animation-delay: -2s; }
+
+@keyframes wave-move {
+  0%, 100% { transform: translateX(-2%) scaleY(1); }
+  50% { transform: translateX(2%) scaleY(1.15); }
+}
+
+.floating-isle {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  bottom: 10%;
+  width: min(560px, 94%);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+
+.isle-top {
+  flex: 1;
+  min-height: 0;
   background:
-    radial-gradient(ellipse at 50% 30%, #6bc47a 0%, transparent 55%),
-    linear-gradient(180deg, #4eab62 0%, #2f6b3d 70%, #245530 100%);
-  border-radius: 45% 48% 38% 42% / 35% 38% 48% 52%;
+    radial-gradient(ellipse at 50% 20%, #7ed98a 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 70%, #4caf60 0%, transparent 45%),
+    linear-gradient(165deg, #5ec86e 0%, #3d9b4f 55%, #2f7a3d 100%);
+  border-radius: 48% 52% 42% 46% / 38% 40% 52% 48%;
   box-shadow:
-    0 18px 0 rgba(13, 74, 86, 0.55),
-    inset 0 8px 24px rgba(255, 255, 255, 0.12);
-  padding: 1.25rem 1rem 1.5rem;
+    inset 0 10px 28px rgba(255, 255, 255, 0.18),
+    inset 0 -16px 24px rgba(20, 60, 30, 0.25);
+  padding: 1.5rem 1.1rem 1.75rem;
   overflow: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.isle-cliff {
+  height: 36px;
+  margin: -6px 8% 0;
+  background: linear-gradient(180deg, #a88458 0%, #7a5535 55%, #5a3c24 100%);
+  border-radius: 0 0 40% 40%;
+  box-shadow: inset 0 4px 0 rgba(255, 220, 160, 0.15);
+  z-index: 1;
+}
+
+.isle-shadow {
+  height: 18px;
+  margin: 6px 12% 0;
+  background: radial-gradient(ellipse at center, rgba(8, 40, 48, 0.45), transparent 70%);
+  border-radius: 50%;
+  animation: bob-shadow 3.5s ease-in-out infinite;
+}
+
+@keyframes bob-shadow {
+  0%, 100% { transform: scaleX(1); opacity: 0.9; }
+  50% { transform: scaleX(0.92); opacity: 0.65; }
 }
 
 .habitat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 0.75rem;
-  max-width: 520px;
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+  gap: 1rem 0.85rem;
+  max-width: 480px;
   margin: 0 auto;
+  align-items: end;
 }
 
 .habitat {
   position: relative;
   aspect-ratio: 1.05;
   border: none;
-  border-radius: 22px;
-  padding: 0.55rem;
-  text-align: left;
+  border-radius: 0;
+  padding: 0;
+  text-align: center;
   color: #fff;
-  background: rgba(20, 50, 40, 0.35);
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
-  overflow: hidden;
-  transition: transform 0.15s ease;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+  transition: transform 0.18s ease;
+  cursor: pointer;
 }
 
 .habitat:hover {
-  transform: scale(1.03);
+  transform: translateY(-6px) scale(1.04);
 }
 
-.habitat.empty {
-  background: rgba(255, 255, 255, 0.12);
-  border: 2px dashed rgba(255, 255, 255, 0.35);
-  color: rgba(255, 255, 255, 0.85);
-  display: grid;
-  place-items: center;
+.habitat:active {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.hab-build {
+  position: absolute;
+  inset: 0 4% 18% 4%;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 4px rgba(0, 0, 0, 0.22));
+}
+
+.hab-dragons {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22%;
+  height: 42px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hab-d {
+  margin: 0 -6px;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+}
+
+.hab-d.slot-1 {
+  transform: scaleX(-1);
+  z-index: 1;
+}
+
+.hab-empty-label {
+  position: absolute;
+  left: 50%;
+  bottom: 28%;
+  transform: translateX(-50%);
+  font-size: 0.68rem;
   font-weight: 800;
-  font-size: 0.85rem;
+  opacity: 0.85;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  z-index: 2;
 }
 
 .habitat .hab-name {
-  font-size: 0.72rem;
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 0;
+  font-size: 0.68rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  opacity: 0.9;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  line-height: 1.2;
 }
 
 .habitat .hab-gold {
   position: absolute;
-  top: 0.45rem;
-  right: 0.45rem;
-  background: rgba(0, 0, 0, 0.35);
-  padding: 0.15rem 0.4rem;
+  top: -4px;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: linear-gradient(180deg, #fff6d0, #f0c84a);
+  color: #7a4e08;
+  padding: 0.18rem 0.45rem;
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 800;
-  color: var(--gold);
+  box-shadow: 0 2px 0 #c4891a, 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.habitat .hab-dragon {
-  position: absolute;
-  left: 50%;
-  bottom: 12%;
-  transform: translateX(-50%);
-  width: 64px;
-  height: 48px;
+.habitat.has-gold .hab-gold {
+  opacity: 1;
+  transform: scale(1);
+  animation: coin-bounce 1.2s ease-in-out infinite;
 }
 
-.habitat.pulse {
+@keyframes coin-bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-4px) scale(1.05); }
+}
+
+.habitat.empty {
+  background: rgba(255, 255, 255, 0.14);
+  border: 2px dashed rgba(255, 255, 255, 0.45);
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  font-weight: 800;
+  font-size: 0.8rem;
+  min-height: 110px;
+  aspect-ratio: 1.05;
+}
+
+.habitat.empty .empty-plus {
+  font-size: 1.6rem;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+.habitat.pulse .hab-build {
   animation: collect-pulse 0.45s ease;
 }
 
 @keyframes collect-pulse {
-  0% { box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12), 0 0 0 0 rgba(232, 184, 74, 0.6); }
-  50% { box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12), 0 0 0 10px rgba(232, 184, 74, 0); }
-  100% { box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12); }
+  0% { filter: drop-shadow(0 6px 4px rgba(0, 0, 0, 0.22)) drop-shadow(0 0 0 rgba(232, 184, 74, 0.8)); }
+  50% { filter: drop-shadow(0 6px 4px rgba(0, 0, 0, 0.22)) drop-shadow(0 0 16px rgba(232, 184, 74, 0.9)); }
+  100% { filter: drop-shadow(0 6px 4px rgba(0, 0, 0, 0.22)); }
 }
 
 /* —— Dragon sprite —— */
 .d-sprite {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.d-sprite .dragon-art {
+  display: block;
   width: 100%;
-  height: 100%;
-  position: relative;
-  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+  height: auto;
 }
 
-.d-sprite .body {
-  position: absolute;
-  left: 18%;
-  bottom: 8%;
-  width: 58%;
-  height: 55%;
-  background: var(--c, #e85d2c);
-  border-radius: 45% 50% 40% 45%;
+.d-sprite.tiny { width: 48px; height: 38px; }
+.d-sprite.med { width: 72px; height: 58px; }
+.d-sprite.lg { width: 104px; height: 84px; }
+
+.modal-hero {
+  display: flex;
+  justify-content: center;
+  margin: 0.25rem 0 0.5rem;
 }
 
-.d-sprite .head {
-  position: absolute;
-  right: 8%;
-  top: 18%;
-  width: 38%;
-  height: 38%;
-  background: var(--c, #e85d2c);
-  border-radius: 45% 55% 40% 50%;
+.shop-thumb {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
 }
 
-.d-sprite .wing {
-  position: absolute;
-  left: 2%;
-  top: 12%;
-  width: 42%;
-  height: 42%;
-  background: color-mix(in srgb, var(--c, #e85d2c) 75%, white);
-  clip-path: polygon(100% 60%, 0 0, 20% 100%);
-  transform-origin: right center;
-  animation: wing 1.8s ease-in-out infinite;
+.shop-thumb.habitat-thumb {
+  width: 64px;
+  height: 52px;
 }
 
-.d-sprite .eye {
-  position: absolute;
-  right: 16%;
-  top: 28%;
-  width: 7px;
-  height: 7px;
-  background: #1a2430;
-  border-radius: 50%;
-  z-index: 2;
+.shop-thumb svg {
+  max-width: 100%;
+  max-height: 100%;
 }
 
-.d-sprite.tiny { width: 48px; height: 36px; }
-.d-sprite.med { width: 72px; height: 54px; }
-.d-sprite.lg { width: 96px; height: 72px; }
-
-@keyframes wing {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(-18deg); }
+.price {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 /* —— Lists —— */
@@ -813,6 +971,10 @@ select {
   animation: hit-shake 0.35s ease;
 }
 
+.fighter.hit .dragon-art {
+  filter: brightness(1.35) saturate(1.2);
+}
+
 @keyframes hit-shake {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-6px); }
@@ -864,6 +1026,9 @@ select {
 
 /* —— Shop —— */
 .shop-item .price {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   font-weight: 800;
   color: var(--gold-deep);
   font-size: 0.85rem;
